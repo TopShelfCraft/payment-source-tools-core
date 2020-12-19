@@ -1,0 +1,55 @@
+<script>
+	// {% js %}
+	$(document).ready(function () {
+		new Craft.PaymentSourceTools.PaymentSourcesTab({
+			userId: {{ user.id|e('js') }},
+		});
+	});
+	// {% endjs %}
+</script>
+
+<div class="tableview">
+	<table class="data fullwidth">
+		<thead>
+		<tr>
+			<th class="">Description</th>
+			<th>Gateway</th>
+			<th class="thin"></th>
+		</tr>
+		</thead>
+		<tbody>
+
+		{% for paymentSource in craft.commerce.paymentSources.getAllPaymentSourcesByUserId(user.id) %}
+
+			<tr item-index="{{ loop.index }}">
+				<td>
+					{{ paymentSource.description }}
+				</td>
+				<td class="">
+					{{ paymentSource.getGateway().name }}
+				</td>
+				<td class="">
+					<a title="Delete" role="button" href="#" class="delete icon _ formsubmit" data-action="commerce/payment-sources/delete" data-redirect="{{ (craft.app.request.pathInfo ~ '#PaymentSourceTools') | hash }}" data-confirm="Are you sure you want to delete this Payment Source?" data-param="id" data-value="{{ paymentSource.id }}"></a>
+				</td>
+			</tr>
+
+		{% else %}
+
+			<tr item-index="1">
+				<td colspan="3">
+					{# TODO: Translate. #}
+					No payment sources.
+				</td>
+			</tr>
+
+		{% endfor %}
+
+		</tbody>
+	</table>
+
+	<div id="footer" class="flex">
+		{# TODO: Translate. #}
+		<button id="PaymentSourceTools-add-payment-source" class="btn submit add icon">Add a Payment Source</button>
+	</div>
+
+</div>
