@@ -2,7 +2,7 @@
 	"name": "topshelfcraft/payment-source-tools-base",
 	"description": "A module to provide base functionality for working with Payment Sources in Craft Commerce projects.",
 	"type": "library",
-	"version": "3.2.0",
+	"version": "3.2.1",
 	"license": "proprietary",
 	"support": {
 		"issues": "https://github.com/topshelfcraft/payment-source-tools-base/issues",

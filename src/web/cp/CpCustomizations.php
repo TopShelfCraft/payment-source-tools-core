@@ -62,8 +62,6 @@ class CpCustomizations extends Component
 			return;
 		}
 
-		Craft::$app->getView()->registerAssetBundle(PaymentSourcesTabAsset::class);
-
 		$context['tabs']['paymentSourceTools'] = [
 			'label' => PaymentSourceToolsBase::t('Payment Sources'),
 			'url' => '#PaymentSourceTools'
