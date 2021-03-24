@@ -14,6 +14,12 @@ use yii\web\Response;
 class WebController extends Controller
 {
 
+	public function init()
+	{
+		parent::init();
+		$this->requireLogin();
+	}
+
 	/**
 	 * @throws \yii\web\BadRequestHttpException if `requireAcceptsJson()` is not satisfied
 	 * @throws \Twig\Error\Error if there's a problem in `renderTemplate()`
@@ -86,14 +92,16 @@ class WebController extends Controller
 		$this->requirePostRequest();
 		$request = Craft::$app->getRequest();
 
-		// TODO: Require the manage permission?
-		if (Craft::$app->getUser()->isGuest)
+		// TODO: Check for admin/permissions if $userId is different from currentUser?
+
+		$userId = (int) $request->getRequiredBodyParam('userId');
+
+		// Require user admin permissions if the Payment Source doesn't belong to the current User.
+		if ($userId !== Craft::$app->getUser()->id)
 		{
-			// TODO: Translate
-			throw new HttpException(401, PaymentSourceToolsBase::t('You must be logged in to create a new Payment Source.'));
+			$this->requirePermission('administrateUsers');
 		}
 
-		$userId = $request->getRequiredBodyParam('userId');
 		$gatewayId = $request->getRequiredBodyParam('gatewayId');
 
 		/** @var Gateway $gateway */
@@ -123,6 +131,42 @@ class WebController extends Controller
 		}
 
 		return $this->getSuccessResponse($paymentSource, ['paymentSource' => $paymentSource]);
+
+	}
+
+	public function actionUpdatePaymentSource()
+	{
+
+		$this->requirePostRequest();
+		$request = Craft::$app->getRequest();
+
+		$paymentSourceId = (int) $request->getRequiredBodyParam('paymentSourceId');
+		$paymentSource = Commerce::getInstance()->paymentSources->getPaymentSourceById($paymentSourceId);
+
+		if (!$paymentSource)
+		{
+			$message = Commerce::t("Invalid payment source ID: {value}", ['value' => $paymentSourceId]);
+			return $this->getErrorResponse($message);
+		}
+
+		// Require user admin permissions if the Payment Source doesn't belong to the current User.
+		if ($paymentSource->userId !== Craft::$app->getUser()->id)
+		{
+			$this->requirePermission('administrateUsers');
+		}
+
+		if (($description = $request->getBodyParam('description')) !== null)
+		{
+			$paymentSource->description = $description;
+		}
+
+		if (!Commerce::getInstance()->paymentSources->savePaymentSource($paymentSource))
+		{
+			// TODO: Translate
+			return $this->getErrorResponse("Could not save the Payment Source.");
+		}
+
+		return $this->getSuccessResponse($paymentSource);
 
 	}
 
