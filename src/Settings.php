@@ -1,5 +1,5 @@
 <?php
-namespace topshelfcraft\paymentsourcetools\base;
+namespace TopShelfCraft\PaymentSourceTools;
 
 class Settings
 {

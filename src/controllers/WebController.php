@@ -1,5 +1,5 @@
 <?php
-namespace topshelfcraft\paymentsourcetools\base\controllers;
+namespace TopShelfCraft\PaymentSourceTools\controllers;
 
 use Craft;
 use craft\commerce\base\Gateway;
@@ -7,7 +7,7 @@ use craft\commerce\elements\Order;
 use craft\commerce\gateways\MissingGateway;
 use craft\commerce\Plugin as Commerce;
 use craft\web\Controller;
-use topshelfcraft\paymentsourcetools\base\PaymentSourceToolsBase;
+use TopShelfCraft\PaymentSourceTools\PaymentSourceTools;
 use yii\web\HttpException;
 use yii\web\Response;
 
@@ -55,7 +55,7 @@ class WebController extends Controller
 				'order' => new Order(),
 			]);
 
-			$paymentFormHtml = $view->renderTemplate('payment-source-tools-base/cp/_paymentSourceForm.twig', [
+			$paymentFormHtml = $view->renderTemplate('___paymentSourceTools/cp/_paymentSourceForm.twig', [
 				'formHtml' => $paymentFormHtml,
 				'userId' => $userId,
 				'gateway' => $gateway,
@@ -65,7 +65,7 @@ class WebController extends Controller
 
 		}
 
-		$modalHtml = $view->renderTemplate('payment-source-tools-base/cp/_paymentSourceModal.twig', [
+		$modalHtml = $view->renderTemplate('___paymentSourceTools/cp/_paymentSourceModal.twig', [
 			'gateways' => $gateways,
 			'paymentForms' => $formHtml,
 		]);
@@ -110,7 +110,7 @@ class WebController extends Controller
 		if (!$gateway || !$gateway->supportsPaymentSources())
 		{
 			// TODO: Translate
-			$error = PaymentSourceToolsBase::t('There is no gateway selected that supports payment sources.');
+			$error = PaymentSourceTools::t('There is no gateway selected that supports payment sources.');
 			return $this->getErrorResponse($error);
 		}
 
@@ -126,7 +126,7 @@ class WebController extends Controller
 		catch (\Throwable $exception)
 		{
 			Craft::$app->getErrorHandler()->logException($exception);
-			$error = PaymentSourceToolsBase::t('Could not create the Payment Source.') . ' (' . $exception->getMessage() . ')';
+			$error = PaymentSourceTools::t('Could not create the Payment Source.') . ' (' . $exception->getMessage() . ')';
 			return $this->getErrorResponse($error, ['paymentForm' => $paymentForm]);
 		}
 

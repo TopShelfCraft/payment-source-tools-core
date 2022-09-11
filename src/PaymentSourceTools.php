@@ -1,17 +1,17 @@
 <?php
-namespace topshelfcraft\paymentsourcetools\base;
+namespace TopShelfCraft\PaymentSourceTools;
 
 use Craft;
 use craft\commerce\Plugin as Commerce;
 use craft\web\Application as WebApplication;
-use topshelfcraft\paymentsourcetools\base\controllers\WebController;
-use topshelfcraft\paymentsourcetools\base\web\cp\CpCustomizations;
+use TopShelfCraft\PaymentSourceTools\controllers\WebController;
+use TopShelfCraft\PaymentSourceTools\web\cp\CpCustomizations;
 use yii\base\Module;
 
 /**
  * @property CpCustomizations $cpCustomizations
  */
-class PaymentSourceToolsBase extends Module
+class PaymentSourceTools extends Module
 {
 
 	/**
@@ -19,46 +19,17 @@ class PaymentSourceToolsBase extends Module
 	 */
 	private $_settings;
 
-	/**
-	 * @param string $handle
-	 *
-	 * @throws \yii\base\InvalidConfigException
-	 */
-	public static function registerModule($handle = 'payment-source-tools-base')
-	{
-		if (!Craft::$app->getModule($handle))
-		{
-			$module = Craft::createObject(static::class, [$handle, Craft::$app]);
-			/** @var static $module */
-			static::setInstance($module);
-			Craft::$app->setModule($handle, $module);
-		}
-	}
-
-	/**
-	 * @param $id
-	 * @param null $parent
-	 * @param array $config
-	 */
-	public function __construct($id, $parent = null, $config = [])
-	{
-
-		$config['components'] = [
-			'cpCustomizations' => CpCustomizations::class,
-		];
-
-		parent::__construct($id, $parent, $config);
-
-	}
-
-	/**
-	 *
-	 */
 	public function init()
 	{
 
-		Craft::setAlias('@topshelfcraft/paymentsourcetools/base', __DIR__);
+		Craft::setAlias('@TopShelfCraft/PaymentSourceTools', __DIR__);
+
 		parent::init();
+		static::setInstance($this);
+
+		$this->setComponents([
+			'cpCustomizations' => CpCustomizations::class,
+		]);
 
 		/*
 		 * Register controllers
@@ -104,6 +75,16 @@ class PaymentSourceToolsBase extends Module
 	public static function t($message, $params = [], $language = null): string
 	{
 		return Commerce::t($message, $params, $language);
+	}
+
+	public static function registerModule(string $id = 'payment-source-tools')
+	{
+		if (!Craft::$app->getModule($id))
+		{
+			$module = static::getInstance()
+				?? Craft::createObject(static::class, [$id, Craft::$app]);
+			Craft::$app->setModule($id, $module);
+		}
 	}
 
 }

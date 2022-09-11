@@ -1,5 +1,5 @@
 <?php
-namespace topshelfcraft\paymentsourcetools\base\web\assets;
+namespace TopShelfCraft\PaymentSourceTools\web\assets;
 
 use craft\web\AssetBundle;
 use craft\web\assets\cp\CpAsset;

@@ -1,11 +1,11 @@
 <?php
-namespace topshelfcraft\paymentsourcetools\base\web\cp;
+namespace TopShelfCraft\PaymentSourceTools\web\cp;
 
 use Craft;
 use craft\events\RegisterTemplateRootsEvent;
 use craft\web\View;
-use topshelfcraft\paymentsourcetools\base\PaymentSourceToolsBase;
-use topshelfcraft\paymentsourcetools\base\web\assets\PaymentSourcesTabAsset;
+use TopShelfCraft\PaymentSourceTools\PaymentSourceTools;
+use TopShelfCraft\PaymentSourceTools\web\assets\PaymentSourcesTabAsset;
 use yii\base\Component;
 use yii\base\Event;
 
@@ -24,7 +24,7 @@ class CpCustomizations extends Component
 			View::class,
 			View::EVENT_REGISTER_CP_TEMPLATE_ROOTS,
 			function(RegisterTemplateRootsEvent $e) {
-				$e->roots['payment-source-tools-base'] = Craft::getAlias('@topshelfcraft/paymentsourcetools/base/web/templates');
+				$e->roots['___paymentSourceTools'] = Craft::getAlias('@TopShelfCraft/PaymentSourceTools/web/templates');
 			}
 		);
 
@@ -32,7 +32,7 @@ class CpCustomizations extends Component
 			View::class,
 			View::EVENT_REGISTER_SITE_TEMPLATE_ROOTS,
 			function(RegisterTemplateRootsEvent $e) {
-				$e->roots['payment-source-tools-base'] = Craft::getAlias('@topshelfcraft/paymentsourcetools/base/web/templates');
+				$e->roots['___paymentSourceTools'] = Craft::getAlias('@TopShelfCraft/PaymentSourceTools/web/templates');
 			}
 		);
 
@@ -48,7 +48,7 @@ class CpCustomizations extends Component
 	public function cpUsersEditHook(array &$context)
 	{
 
-		if (!PaymentSourceToolsBase::getInstance()->getSettings()->addPaymentSourcesUserTab)
+		if (!PaymentSourceTools::getInstance()->getSettings()->addPaymentSourcesUserTab)
 		{
 			return;
 		}
@@ -63,7 +63,7 @@ class CpCustomizations extends Component
 		}
 
 		$context['tabs']['paymentSourceTools'] = [
-			'label' => PaymentSourceToolsBase::t('Payment Sources'),
+			'label' => PaymentSourceTools::t('Payment Sources'),
 			'url' => '#PaymentSourceTools'
 		];
 
@@ -84,7 +84,7 @@ class CpCustomizations extends Component
 	public function cpUsersEditContentHook(array &$context)
 	{
 
-		if (!PaymentSourceToolsBase::getInstance()->getSettings()->addPaymentSourcesUserTab)
+		if (!PaymentSourceTools::getInstance()->getSettings()->addPaymentSourcesUserTab)
 		{
 			return '';
 		}
@@ -96,7 +96,7 @@ class CpCustomizations extends Component
 			return '';
 		}
 
-		return Craft::$app->getView()->renderTemplate('payment-source-tools-base/cp/_hooks/cp.users.edit.content.twig', [
+		return Craft::$app->getView()->renderTemplate('___paymentSourceTools/cp/_hooks/cp.users.edit.content.twig', [
 			'user' => $context['user'],
 		]);
 

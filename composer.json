@@ -1,12 +1,12 @@
 {
-	"name": "topshelfcraft/payment-source-tools-base",
-	"description": "A module to provide base functionality for working with Payment Sources in Craft Commerce projects.",
+	"name": "topshelfcraft/payment-source-tools-core",
+	"description": "A module to provide core functionality for working with Payment Sources in Craft Commerce projects.",
 	"type": "library",
-	"version": "3.2.2",
+	"version": "3.3.0",
 	"license": "proprietary",
 	"support": {
-		"issues": "https://github.com/topshelfcraft/payment-source-tools-base/issues",
-		"source": "https://github.com/topshelfcraft/payment-source-tools-base"
+		"issues": "https://github.com/topshelfcraft/payment-source-tools-core/issues",
+		"source": "https://github.com/topshelfcraft/payment-source-tools-core"
 	},
 	"authors": [
 		{
@@ -19,7 +19,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"topshelfcraft\\paymentsourcetools\\base\\": "src/"
+			"TopShelfCraft\\PaymentSourceTools\\": "src/"
 		}
 	}
 }
